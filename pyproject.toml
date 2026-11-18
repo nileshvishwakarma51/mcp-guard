@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-guard"
+version = "1.0.0"
+description = "Intercept MCP requests from Claude Desktop and Claude Web and let the user allow or block each one."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp>=3.9",
+]
+
+[project.optional-dependencies]
+# The guard itself speaks raw JSON-RPC and does not need the MCP SDK.
+# The SDK is only used by the bundled demo server and the test-suite.
+demo = ["mcp>=1.12,<2"]
+dev = ["mcp>=1.12,<2", "pytest>=8", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+mcp-guard = "mcp_guard.__main__:main"
+
+[tool.setuptools]
+packages = ["mcp_guard", "demo_server"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
